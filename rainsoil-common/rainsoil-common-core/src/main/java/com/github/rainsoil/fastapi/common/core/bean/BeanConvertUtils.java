@@ -35,7 +35,7 @@ public class BeanConvertUtils extends BeanUtils {
         }
         copyProperties(source, target);
         if (null != callBack) {
-            callBack.callback(source, target);
+            callBack.callBack(source, target);
         }
         return target;
     }
@@ -105,7 +105,7 @@ public class BeanConvertUtils extends BeanUtils {
             T target = targetSupplier.get();
             BeanUtils.copyProperties(source, target);
             if (callBack != null) {
-                callBack.callback(source, target);
+                callBack.callBack(source, target);
             }
             targets.add(target);
         }

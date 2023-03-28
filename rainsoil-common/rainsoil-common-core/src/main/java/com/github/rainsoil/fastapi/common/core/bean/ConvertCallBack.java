@@ -18,5 +18,5 @@ public interface ConvertCallBack<S, T> {
      * @param t 目标对象
      * @since 2023/3/25/025
      */
-    void callback(S s, T t);
+    void callBack(S s, T t);
 }
