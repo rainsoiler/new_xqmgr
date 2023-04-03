@@ -84,6 +84,7 @@ public class SpringContextHolder extends WebUtils implements BeanFactoryPostProc
 	 */
 	@SuppressWarnings("unchecked")
 	public static <T> T getBean(String name) {
+		
 		return Opt.ofNullable(BEAN_FACTORY).map(a -> (T) a.getBean(name)).orElseGet(() -> null);
 	}
 

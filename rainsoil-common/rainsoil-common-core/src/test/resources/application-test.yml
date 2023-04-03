@@ -10,6 +10,15 @@ spring:
       schema-locations: classpath:db/schema-h2.sql
       data-locations: classpath:db/data-h2.sql
       mode: always
+  file:
+    client:
+      impl-class: com.github.rainsoil.fastapi.common.core.file.FileClientServiceStrategy
+      local-storage-path: E:/tmp
+      type: local
+    enable: true
+    file-domain: http://localhost:9999
 logging:
   level:
     com.github.rainsoil: debug
+
+
