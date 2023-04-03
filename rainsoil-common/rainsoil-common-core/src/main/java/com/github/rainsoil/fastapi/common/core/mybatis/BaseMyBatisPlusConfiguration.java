@@ -1,10 +1,12 @@
 package com.github.rainsoil.fastapi.common.core.mybatis;
 
 import com.baomidou.mybatisplus.autoconfigure.MybatisPlusAutoConfiguration;
+import com.baomidou.mybatisplus.core.incrementer.IdentifierGenerator;
 import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.BlockAttackInnerInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.OptimisticLockerInnerInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
+import com.github.yitter.idgen.YitIdHelper;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -70,5 +72,17 @@ public class BaseMyBatisPlusConfiguration {
             }
         }
         return mybatisPlusInterceptor;
+    }
+    
+    /**
+     * 自定义id主键策略
+     *
+     * @return com.baomidou.mybatisplus.core.incrementer.IdentifierGenerator
+     * @since 2023/04/03
+     */
+    @ConditionalOnClass(YitIdHelper.class)
+    @Bean
+    public IdentifierGenerator identifierGenerator() {
+        return new CustomKeyGenerator();
     }
 }

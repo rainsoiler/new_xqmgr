@@ -2,7 +2,7 @@ package com.github.rainsoil.fastapi.common.core.file;
 
 import cn.hutool.core.io.FileUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -11,7 +11,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.nio.charset.Charset;
 
-import static org.junit.jupiter.api.Assertions.*;
 
 @Slf4j
 @SpringBootTest
@@ -24,7 +23,7 @@ public class FileTemplateTest {
     private FileTemplate fileTemplate;
     
     @Test
-    void upload() {
+    public void uploadTest() {
         String tmpPath = System.getProperty("user.dir") + "/tmp";
         FileUtil.mkdir(tmpPath);
         String filePath = tmpPath + "/testupload.csv";
@@ -33,6 +32,7 @@ public class FileTemplateTest {
         
         FileInfoVo fileInfoVo = fileTemplate.upload(FileUtil.readBytes(filePath), "test", "testupload.csv");
         System.out.println(fileInfoVo);
+        FileUtil.del(filePath);
         
     }
 }

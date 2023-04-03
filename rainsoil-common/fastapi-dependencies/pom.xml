@@ -1,82 +1,109 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<!--    <parent>-->
-	<!--        <artifactId>rainsoil-common</artifactId>-->
-	<!--        <groupId>com.github.rainsoil.fastapi.common</groupId>-->
-	<!--        <version>1.0-SNAPSHOT</version>-->
-	<!--    </parent>-->
-	<modelVersion>4.0.0</modelVersion>
-	<version>1.0-SNAPSHOT</version>
-	<groupId>com.github.rainsoil.fastapi</groupId>
-	<artifactId>fastapi-dependencies</artifactId>
-	<packaging>pom</packaging>
-	<properties>
-		<maven.compiler.source>8</maven.compiler.source>
-		<maven.compiler.target>8</maven.compiler.target>
-		<druid.version>1.2.11</druid.version>
-		<spring.boot.version>2.5.14</spring.boot.version>
-		<hutool.version>5.8.15</hutool.version>
-
-		<lombok.version>1.18.24</lombok.version>
-		<mybatis-plus-boot.version>3.5.2</mybatis-plus-boot.version>
-		<mybatis-plus-join.version>1.2.4</mybatis-plus-join.version>
-		<transmittable-thread-local.version>2.11.4</transmittable-thread-local.version>
-	</properties>
-
-
-	<dependencyManagement>
-		<dependencies>
-			<!-- SpringBoot的依赖配置-->
-			<dependency>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-dependencies</artifactId>
-				<version>${spring.boot.version}</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-			<!-- 阿里数据库连接池 -->
-			<dependency>
-				<groupId>com.alibaba</groupId>
-				<artifactId>druid-spring-boot-starter</artifactId>
-				<version>${druid.version}</version>
-			</dependency>
-
-			<dependency>
-				<groupId>cn.hutool</groupId>
-				<artifactId>hutool-all</artifactId>
-				<version>${hutool.version}</version>
-			</dependency>
-
-			<dependency>
-				<groupId>org.projectlombok</groupId>
-				<artifactId>lombok</artifactId>
-				<version>${lombok.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>com.baomidou</groupId>
-				<artifactId>mybatis-plus-boot-starter</artifactId>
-				<version>${mybatis-plus-boot.version}</version>
-			</dependency>
-
-
-			<!-- mybatis plus 联表关联-->
-			<dependency>
-				<groupId>com.github.yulichang</groupId>
-				<artifactId>mybatis-plus-join</artifactId>
-				<version>${mybatis-plus-join.version}</version>
-			</dependency>
-
-			<dependency>
-				<groupId>com.alibaba</groupId>
-				<artifactId>transmittable-thread-local</artifactId>
-				<version>${transmittable-thread-local.version}</version>
-
-			</dependency>
-		</dependencies>
-
-	</dependencyManagement>
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <!--    <parent>-->
+    <!--        <artifactId>rainsoil-common</artifactId>-->
+    <!--        <groupId>com.github.rainsoil.fastapi.common</groupId>-->
+    <!--        <version>1.0-SNAPSHOT</version>-->
+    <!--    </parent>-->
+    <modelVersion>4.0.0</modelVersion>
+    <version>1.0-SNAPSHOT</version>
+    <groupId>com.github.rainsoil.fastapi</groupId>
+    <artifactId>fastapi-dependencies</artifactId>
+    <packaging>pom</packaging>
+    <properties>
+        <maven.compiler.source>8</maven.compiler.source>
+        <maven.compiler.target>8</maven.compiler.target>
+        <druid.version>1.2.11</druid.version>
+        <spring.boot.version>2.5.14</spring.boot.version>
+        <hutool.version>5.8.15</hutool.version>
+        
+        <lombok.version>1.18.24</lombok.version>
+        <mybatis-plus-boot.version>3.5.2</mybatis-plus-boot.version>
+        <mybatis-plus-join.version>1.2.4</mybatis-plus-join.version>
+        <transmittable-thread-local.version>2.11.4</transmittable-thread-local.version>
+        <yitter-idgenerator.version>1.0.6</yitter-idgenerator.version>
+        <knife4j-spring-boot.version>2.0.9</knife4j-spring-boot.version>
+        <guava.version>28.2-jre</guava.version>
+    </properties>
+    
+    
+    <dependencyManagement>
+        <dependencies>
+            <!-- SpringBoot的依赖配置-->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${spring.boot.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <!-- 阿里数据库连接池 -->
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>druid-spring-boot-starter</artifactId>
+                <version>${druid.version}</version>
+            </dependency>
+            
+            <dependency>
+                <groupId>cn.hutool</groupId>
+                <artifactId>hutool-all</artifactId>
+                <version>${hutool.version}</version>
+            </dependency>
+            
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>${lombok.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-boot-starter</artifactId>
+                <version>${mybatis-plus-boot.version}</version>
+            </dependency>
+            
+            
+            <!-- mybatis plus 联表关联-->
+            <dependency>
+                <groupId>com.github.yulichang</groupId>
+                <artifactId>mybatis-plus-join</artifactId>
+                <version>${mybatis-plus-join.version}</version>
+            </dependency>
+            
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>transmittable-thread-local</artifactId>
+                <version>${transmittable-thread-local.version}</version>
+            </dependency>
+            
+            <dependency>
+                <groupId>com.github.yitter</groupId>
+                <artifactId>yitter-idgenerator</artifactId>
+                <version>${yitter-idgenerator.version}</version>
+            </dependency>
+            <!--引入Knife4j的官方start包,Swagger2基于Springfox2.10.5项目-->
+            <dependency>
+                <groupId>com.github.xiaoymin</groupId>
+                <!--使用Swagger2-->
+                <artifactId>knife4j-spring-boot-starter</artifactId>
+                <version>${knife4j-spring-boot.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+                <version>${guava.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.rainsoil.fastapi.common.core</groupId>
+                <artifactId>rainsoil-common-core</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+        
+        
+        </dependencies>
+    
+    </dependencyManagement>
 
 
 </project>

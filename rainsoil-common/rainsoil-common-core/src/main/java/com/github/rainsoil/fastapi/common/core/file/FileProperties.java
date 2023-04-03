@@ -51,6 +51,12 @@ public class FileProperties {
     private Map<String, FileClientProperties> clients = new HashMap<>();
     
     
+    /**
+     * 获取客户端
+     *
+     * @return java.util.Map<java.lang.String, com.github.rainsoil.fastapi.common.core.file.FileProperties.FileClientProperties>
+     * @since 2023/04/03
+     */
     public Map<String, FileClientProperties> getClients() {
         if (!this.clients.containsKey("default") && null != this.client) {
             this.clients.put("default", this.client);

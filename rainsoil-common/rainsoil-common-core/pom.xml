@@ -105,6 +105,13 @@
             <artifactId>h2</artifactId>
             <scope>test</scope>
         </dependency>
+        
+        <dependency>
+            <groupId>com.github.yitter</groupId>
+            <artifactId>yitter-idgenerator</artifactId>
+            <scope>provided</scope>
+        </dependency>
+    
     </dependencies>
 
 </project>
