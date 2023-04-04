@@ -1,0 +1,10 @@
+jasypt:
+  encryptor:
+    ## 16位
+    password: k0fek3wnux55pf6z
+spring:
+  datasource:
+    driver-class-name: org.apache.ibatis.datasource.unpooled.UnpooledDataSource.DriverProxy
+    username: ENC(a44625760f8fc68e8d3c6e3f18f898cd)
+    password: ENC(a44625760f8fc68e8d3c6e3f18f898cd)
+    url: ENC(a44625760f8fc68e8d3c6e3f18f898cd)

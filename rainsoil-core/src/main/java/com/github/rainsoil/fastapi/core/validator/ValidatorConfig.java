@@ -16,11 +16,18 @@ import javax.validation.ValidatorFactory;
  */
 @Configuration
 public class ValidatorConfig {
-    
-    @Bean
-    public Validator validator() {
-        ValidatorFactory validatorFactory = Validation.byProvider(HibernateValidator.class).configure().failFast(true)
-                .buildValidatorFactory();
-        return validatorFactory.getValidator();
-    }
+
+
+	/**
+	 * 参数校验配置
+	 *
+	 * @return javax.validation.Validator
+	 * @since 2023/4/4
+	 */
+	@Bean
+	public Validator validator() {
+		ValidatorFactory validatorFactory = Validation.byProvider(HibernateValidator.class).configure().failFast(true)
+				.buildValidatorFactory();
+		return validatorFactory.getValidator();
+	}
 }

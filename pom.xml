@@ -11,6 +11,7 @@
     <modules>
         <module>rainsoil-common</module>
         <module>rainsoil-core</module>
+        <module>rainsoil-web</module>
     </modules>
     
     <properties>
