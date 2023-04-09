@@ -1,7 +1,15 @@
 spring:
   profiles:
     active: dev
-
 jasypt:
   encryptor:
     bean: sm4StringEncryptor
+server:
+  port: 9012
+  servlet:
+    context-path: /xqmgr
+
+
+logging:
+  level:
+    com.github.rainsoil.fastapi: debug

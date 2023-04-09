@@ -26,4 +26,5 @@ public class SmUtilTest {
 		System.out.println(encryptHex);
 		System.out.println(decryptStr);
 	}
+
 }

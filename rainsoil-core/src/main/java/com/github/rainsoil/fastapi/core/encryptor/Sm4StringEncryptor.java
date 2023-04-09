@@ -15,21 +15,8 @@ import java.nio.charset.StandardCharsets;
  * @author luyanan
  * @since 2023/4/4
  **/
-@RequiredArgsConstructor
-@Component("sm4StringEncryptor")
-public class Sm4StringEncryptor implements StringEncryptor {
+public class Sm4StringEncryptor  {
 
-	private final JasyptEncryptorConfigurationProperties configurationProperties;
 
-	@Override
-	public String encrypt(String s) {
-		SM4 sm4 = SmUtil.sm4(configurationProperties.getPassword().getBytes(StandardCharsets.UTF_8));
-		return sm4.encryptHex(s);
-	}
 
-	@Override
-	public String decrypt(String s) {
-		SM4 sm4 = SmUtil.sm4(configurationProperties.getPassword().getBytes(StandardCharsets.UTF_8));
-		return sm4.decryptStr(s, StandardCharsets.UTF_8);
-	}
 }
