@@ -12,6 +12,8 @@ import com.github.rainsoil.fastapi.web.system.service.ISysUserService;
 import com.github.rainsoil.fastapi.web.system.service.IWxUserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -36,13 +38,12 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
 	private final ISysUserService sysUserService;
 
-	private final ISysMenuService sysMenuService;
-
-	private final ISysRoleService sysRoleService;
 
 	private final IWxUserService wxUserService;
 
-	private final PasswordEncoder passwordEncoder;
+	@Autowired
+	@Lazy
+	private PasswordEncoder passwordEncoder;
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
