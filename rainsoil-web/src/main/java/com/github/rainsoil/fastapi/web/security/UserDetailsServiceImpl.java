@@ -5,14 +5,17 @@ import com.github.rainsoil.fastapi.common.core.bean.BeanConvertUtils;
 import com.github.rainsoil.fastapi.web.system.entity.SysMenu;
 import com.github.rainsoil.fastapi.web.system.entity.SysRole;
 import com.github.rainsoil.fastapi.web.system.entity.SysUser;
+import com.github.rainsoil.fastapi.web.system.entity.WxUser;
 import com.github.rainsoil.fastapi.web.system.service.ISysMenuService;
 import com.github.rainsoil.fastapi.web.system.service.ISysRoleService;
 import com.github.rainsoil.fastapi.web.system.service.ISysUserService;
+import com.github.rainsoil.fastapi.web.system.service.IWxUserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
@@ -37,18 +40,35 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
 	private final ISysRoleService sysRoleService;
 
+	private final IWxUserService wxUserService;
+
+	private final PasswordEncoder passwordEncoder;
+
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		SysUser sysUser = sysUserService.getOne(new LambdaQueryWrapper<SysUser>().eq(SysUser::getUsername, username));
-		if (null == sysUser) {
-			throw new UsernameNotFoundException(username + "没有找到");
-		}
+
+
+		ClientUtils.Source source = ClientUtils.getSource();
+		if (source.equals(ClientUtils.Source.WEB)) {
+			SysUser sysUser = sysUserService.getOne(new LambdaQueryWrapper<SysUser>().eq(SysUser::getUsername, username));
+			if (null == sysUser) {
+				throw new UsernameNotFoundException(username + "没有找到");
+			}
 
 //		// 获取角色
 //		SysRole sysRole = sysRoleService.getById(sysUser.getRoleId());
 //		List<String> menuIds = Arrays.stream(sysRole.getMenus().split(",")).collect(Collectors.toList());
 //		List<SysMenu> menuList = sysMenuService.listByIds(menuIds);
+			return BeanConvertUtils.convertTo(sysUser, LoginUser::new);
+		} else {
+			// 小程序
+			WxUser wxUser = wxUserService.getById(username);
 
-		return BeanConvertUtils.convertTo(sysUser, LoginUser::new);
+			LoginUser loginUser = new LoginUser();
+			loginUser.setNickname(wxUser.getNickname());
+			loginUser.setId(wxUser.getId());
+			loginUser.setPassword(passwordEncoder.encode("123456"));
+			return loginUser;
+		}
 	}
 }
