@@ -12,6 +12,7 @@ import com.github.rainsoil.fastapi.web.system.service.ISysUserService;
 import com.github.rainsoil.fastapi.web.system.service.IWxUserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -47,29 +48,42 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-
+		LoginUser loginUser = null;
 
 		ClientUtils.Source source = ClientUtils.getSource();
 		if (source.equals(ClientUtils.Source.WEB)) {
 			SysUser sysUser = sysUserService.getOne(new LambdaQueryWrapper<SysUser>().eq(SysUser::getUsername, username));
 			if (null == sysUser) {
-				throw new UsernameNotFoundException(username + "没有找到");
+				loginUser = getWxUser(username);
+			} else {
+				loginUser = BeanConvertUtils.convertTo(sysUser, LoginUser::new);
 			}
 
 //		// 获取角色
 //		SysRole sysRole = sysRoleService.getById(sysUser.getRoleId());
 //		List<String> menuIds = Arrays.stream(sysRole.getMenus().split(",")).collect(Collectors.toList());
 //		List<SysMenu> menuList = sysMenuService.listByIds(menuIds);
-			return BeanConvertUtils.convertTo(sysUser, LoginUser::new);
 		} else {
 			// 小程序
-			WxUser wxUser = wxUserService.getById(username);
-
-			LoginUser loginUser = new LoginUser();
-			loginUser.setNickname(wxUser.getNickname());
-			loginUser.setId(wxUser.getId());
-			loginUser.setPassword(passwordEncoder.encode("123456"));
-			return loginUser;
+			loginUser = getWxUser(username);
 		}
+		if (null == loginUser) {
+			throw new UsernameNotFoundException(username + "没有找到");
+		}
+		return loginUser;
+	}
+
+	@NotNull
+	private LoginUser getWxUser(String username) {
+		WxUser wxUser = wxUserService.getById(username);
+
+		if (null == wxUser) {
+			return null;
+		}
+		LoginUser loginUser = new LoginUser();
+		loginUser.setNickname(wxUser.getNickname());
+		loginUser.setId(wxUser.getId());
+		loginUser.setPassword(passwordEncoder.encode("123456"));
+		return loginUser;
 	}
 }

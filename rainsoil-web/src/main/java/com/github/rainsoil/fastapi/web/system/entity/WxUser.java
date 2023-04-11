@@ -40,7 +40,7 @@ public class WxUser implements Serializable {
 
 	@ApiModelProperty("逻辑删除(0:正常,1:删除)")
 	@TableField("del_flag")
-	@TableLogic
+//	@TableLogic
 	private String delFlag;
 	/**
 	 * 修改人

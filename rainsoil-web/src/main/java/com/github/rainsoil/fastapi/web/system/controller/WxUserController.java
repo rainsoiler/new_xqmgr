@@ -7,6 +7,8 @@ import com.github.rainsoil.fastapi.common.core.R;
 import com.github.rainsoil.fastapi.common.core.bean.BeanConvertUtils;
 import com.github.rainsoil.fastapi.common.core.exception.WarningException;
 import com.github.rainsoil.fastapi.common.core.mybatis.PageHandler;
+import com.github.rainsoil.fastapi.web.security.LoginService;
+import com.github.rainsoil.fastapi.web.security.LoginUser;
 import com.github.rainsoil.fastapi.web.system.entity.Store;
 import com.github.rainsoil.fastapi.web.system.entity.WxUser;
 import com.github.rainsoil.fastapi.web.system.service.IStoreService;
@@ -34,6 +36,8 @@ public class WxUserController {
 	private final IWxUserService iWxUserService;
 
 	private final IStoreService storeService;
+
+	private final LoginService loginService;
 
 	/**
 	 * 分页
@@ -97,7 +101,7 @@ public class WxUserController {
 
 
 	/**
-	 * 根据openid查询用户信息
+	 * 小程序-根据openid查询用户信息
 	 *
 	 * @param openid
 	 * @return com.github.rainsoil.fastapi.common.core.R<com.github.rainsoil.fastapi.web.system.vo.WxUserVo.WxUserMinioVo>
@@ -117,6 +121,71 @@ public class WxUserController {
 		wxUserMinioVo.setStoreName(store.getName());
 		wxUserMinioVo.setDeviceSN(store.getEquipmentSn());
 		return R.ok(wxUserMinioVo);
+	}
+
+
+	/**
+	 * 小程序-查询店员
+	 *
+	 * @param pageRequest 分页参数
+	 * @return com.github.rainsoil.fastapi.common.core.R<com.github.rainsoil.fastapi.web.system.entity.WxUser>
+	 * @since 2023/04/11
+	 */
+	@ApiOperation(value = "小程序-查询店员")
+	@PostMapping("mini/clerk")
+	public R<PageInfo<WxUser>> clerk(@RequestBody PageRequest<WxUser> pageRequest) {
+		LoginUser user = loginService.getUser();
+		WxUser param = pageRequest.getParam();
+
+		WxUser wxUser = this.iWxUserService.getById(user.getId());
+		if (null == param) {
+			param = new WxUser();
+		}
+		param.setStoreId(wxUser.getStoreId())
+				.setAdmin("0");
+		return R.ok(this.iWxUserService.page(pageRequest));
+	}
+
+
+	/**
+	 * 小程序-绑定店员
+	 *
+	 * @param bindClerkVo 绑定店员vo类
+	 * @return com.github.rainsoil.fastapi.common.core.R
+	 * @since 2023/04/11
+	 */
+	@ApiOperation(value = "小程序-绑定店员")
+	@PostMapping("mini/bindClerk")
+	public R miniBindClerk(@RequestBody WxUserVo.BindClerkVo bindClerkVo) {
+
+		LoginUser user = loginService.getUser();
+		WxUser wxUser = this.iWxUserService.getById(user.getId());
+		// 判断店员是不是已经绑定
+		WxUser wxUser2 = this.iWxUserService.getById(bindClerkVo.getId());
+		if (null != wxUser2) {
+			throw new WarningException(20000);
+		}
+		WxUser param = BeanConvertUtils.convertTo(bindClerkVo, WxUser::new);
+		param.setAdmin("0");
+		param.setStoreId(wxUser.getStoreId());
+		this.save(param);
+		return R.ok();
+	}
+
+
+	/**
+	 * 小程序-解除员工绑定
+	 *
+	 * @param id 员工的id
+	 * @return com.github.rainsoil.fastapi.common.core.R
+	 * @since 2023/04/11
+	 */
+	@PostMapping("miniRelieveBindClerk")
+	@ApiOperation(value = "小程序-解除员工绑定")
+	public R miniRelieveBindClerk(String id) {
+
+		this.iWxUserService.removeById(id);
+		return R.ok();
 	}
 
 }

@@ -77,4 +77,29 @@ public class WxUserVo {
 		private String storeName;
 	}
 
+
+	/**
+	 * 绑定店员vo类
+	 *
+	 * @author luyanan
+	 * @since 2023/04/11
+	 */
+	@Data
+	public static class BindClerkVo {
+
+		/**
+		 * 昵称
+		 */
+
+		@ApiModelProperty("昵称")
+		private String nickname;
+
+
+		/**
+		 * id
+		 */
+
+		@ApiModelProperty("id")
+		private String id;
+	}
 }

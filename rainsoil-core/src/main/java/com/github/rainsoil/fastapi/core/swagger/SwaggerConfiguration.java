@@ -8,18 +8,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import springfox.bean.validators.configuration.BeanValidatorPluginsConfiguration;
-import springfox.documentation.builders.ApiInfoBuilder;
-import springfox.documentation.builders.OAuthBuilder;
-import springfox.documentation.builders.PathSelectors;
-import springfox.documentation.builders.RequestHandlerSelectors;
-import springfox.documentation.service.ApiInfo;
-import springfox.documentation.service.AuthorizationScope;
-import springfox.documentation.service.Contact;
-import springfox.documentation.service.GrantType;
-import springfox.documentation.service.OAuth;
-import springfox.documentation.service.ResourceOwnerPasswordCredentialsGrant;
-import springfox.documentation.service.SecurityReference;
-import springfox.documentation.service.SecurityScheme;
+import springfox.documentation.builders.*;
+import springfox.documentation.schema.ModelRef;
+import springfox.documentation.service.*;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spi.service.contexts.SecurityContext;
 import springfox.documentation.spring.web.plugins.Docket;
@@ -71,7 +62,12 @@ public class SwaggerConfiguration {
 		scopes.add(new AuthorizationScope("write", "write resources"));
 		scopes.add(new AuthorizationScope("reads", "read all resources"));
 		scopes.add(new AuthorizationScope("writes", "write all resources"));
-
+		ParameterBuilder aParameterBuilder = new ParameterBuilder();
+		aParameterBuilder.name("source").description("来源(WEB/MINI)").modelRef(new ModelRef("string")).parameterType("header")
+				.defaultValue("WEB")
+				.required(true).build();
+		List<Parameter> aParameters = Lists.newArrayList();
+		aParameters.add(aParameterBuilder.build());
 		SecurityReference securityReference = new SecurityReference("oauth2",
 				scopes.toArray(new AuthorizationScope[]{}));
 		SecurityContext securityContext = new SecurityContext(Lists.newArrayList(securityReference),
@@ -82,7 +78,10 @@ public class SwaggerConfiguration {
 		List<SecurityContext> securityContexts = Lists.newArrayList(securityContext);
 		return new Docket(DocumentationType.SWAGGER_2).select()
 				.apis(RequestHandlerSelectors.withMethodAnnotation(ApiOperation.class)).paths(PathSelectors.any())
-				.build().securityContexts(securityContexts).securitySchemes(securitySchemes).apiInfo(apiInfo());
+				.build()
+				.securityContexts(securityContexts).securitySchemes(securitySchemes)
+				.globalOperationParameters(aParameters)
+				.apiInfo(apiInfo());
 
 
 	}

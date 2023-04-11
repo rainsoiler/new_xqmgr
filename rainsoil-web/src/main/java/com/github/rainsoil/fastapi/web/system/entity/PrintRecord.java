@@ -73,72 +73,82 @@ public class PrintRecord implements Serializable {
 	/**
 	 * 打印机编码
 	 */
-	@ApiModelProperty(name = "打印机编码", notes = "")
+	@ApiModelProperty(value = "打印机编码", notes = "")
 	private String code;
 	/**
 	 * 店铺id
 	 */
-	@ApiModelProperty(name = "店铺id", notes = "")
+	@ApiModelProperty(value = "店铺id", notes = "")
 	private String storeId;
 	/**
 	 * 区域id
 	 */
-	@ApiModelProperty(name = "区域id", notes = "")
+	@ApiModelProperty(value = "区域id", notes = "")
 	private String regionId;
 	/**
 	 * 公司id
 	 */
-	@ApiModelProperty(name = "公司id", notes = "")
+	@ApiModelProperty(value = "公司id", notes = "")
 	private String companyId;
 	/**
 	 * 物料id
 	 */
-	@ApiModelProperty(name = "物料id", notes = "")
+	@ApiModelProperty(value = "物料id", notes = "")
 	private String materialId;
 	/**
 	 * 物料名称
 	 */
-	@ApiModelProperty(name = "物料名称", notes = "")
+	@ApiModelProperty(value = "物料名称", notes = "")
 	private String materialName;
 	/**
 	 * 店铺名称
 	 */
-	@ApiModelProperty(name = "店铺名称", notes = "")
+	@ApiModelProperty(value = "店铺名称", notes = "")
 	private String storeName;
 	/**
 	 * 区域名称
 	 */
-	@ApiModelProperty(name = "区域名称", notes = "")
+	@ApiModelProperty(value = "区域名称", notes = "")
 	private String regionName;
 	/**
 	 * 打印时间
 	 */
-	@ApiModelProperty(name = "打印时间", notes = "")
+	@ApiModelProperty(value = "打印时间", notes = "")
 	private LocalDateTime printTime;
 	/**
 	 * 过期时间
 	 */
-	@ApiModelProperty(name = "过期时间", notes = "")
+	@ApiModelProperty(value = "过期时间", notes = "")
 	private LocalDateTime expirationTime;
 	/**
 	 * 过期毫秒数
 	 */
-	@ApiModelProperty(name = "过期毫秒数", notes = "")
+	@ApiModelProperty(value = "过期毫秒数", notes = "")
 	private Long expirationMs;
 	/**
 	 * 保存时间
 	 */
-	@ApiModelProperty(name = "保存时间", notes = "")
+	@ApiModelProperty(value = "保存时间", notes = "")
 	private String saveTime;
 	/**
 	 * 状态
 	 */
-	@ApiModelProperty(name = "状态", notes = "")
+	@ApiModelProperty(value = "状态", notes = "")
 	private String status;
 	/**
 	 * 打印毫秒数
 	 */
-	@ApiModelProperty(name = "打印毫秒数", notes = "")
+	@ApiModelProperty(value = "打印毫秒数", notes = "")
 	private Long printMs;
+
+
+	/**
+	 * 状态(1:标准,2:临期,3:超时,4:已完结)
+	 *
+	 * @since 2023/04/11
+	 */
+	@ApiModelProperty(value = "状态(1:标准,2:临期,3:超时,4:已完结)")
+	@TableField(exist = false)
+	private String miniStatus;
 
 }

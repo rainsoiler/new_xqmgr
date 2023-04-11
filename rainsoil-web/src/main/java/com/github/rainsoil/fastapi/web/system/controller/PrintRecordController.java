@@ -22,6 +22,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
+
 /**
  * 打印记录 前端控制器
  *
@@ -136,4 +138,50 @@ public class PrintRecordController {
 				.setTotalPrintCount(totalPrintCount)
 				.setUntreatedCount(untreatedCount));
 	}
+
+
+	/**
+	 * 小程序-标签管理
+	 *
+	 * @param pageRequest 分页请求参数
+	 * @return com.github.rainsoil.fastapi.common.core.R<com.github.rainsoil.fastapi.common.core.PageInfo < com.github.rainsoil.fastapi.web.system.entity.PrintRecord>>
+	 * @since 2023/04/11
+	 */
+	@ApiOperation(value = "小程序-标签管理")
+	@PostMapping("miniManage")
+	public R<PageInfo<PrintRecord>> miniManage(@RequestBody PageRequest<PrintRecord> pageRequest) {
+		PageInfo<PrintRecord> pageInfo = this.iPrintRecordService.page(pageRequest, new PageHandler<PrintRecord>() {
+			@Override
+			public void queryWrapperHandler(PrintRecord param, LambdaQueryWrapper<PrintRecord> queryWrapper) {
+				if (null != param) {
+					LoginUser user = loginService.getUser();
+					WxUser wxUser = wxUserService.getById(user.getId());
+					queryWrapper.eq(PrintRecord::getStoreId, wxUser.getStoreId());
+					String miniStatus = param.getMiniStatus();
+					if (miniStatus.equals("1")) {
+						// 标准(过期时间大于今天的)
+
+						queryWrapper.eq(PrintRecord::getStatus, 1)
+								.ge(PrintRecord::getExpirationMs, System.currentTimeMillis());
+					} else if (miniStatus.equals("2")) {
+						// 临期(过期时间大于今天,小于临期时间之内的)
+						queryWrapper.eq(PrintRecord::getStatus, 1)
+								.ge(PrintRecord::getExpirationMs, System.currentTimeMillis())
+								.lt(PrintRecord::getExpirationMs, DateUtil.offsetDay(new Date(), 2).getTime());
+					} else if (miniStatus.equals("3")) {
+						// 超时(过期时间小于今天的)
+						queryWrapper.eq(PrintRecord::getStatus, "1")
+								.lt(PrintRecord::getExpirationMs, System.currentTimeMillis());
+					} else if (miniStatus.equals("4")) {
+						// 已完结
+						queryWrapper.eq(PrintRecord::getStatus, "2");
+					}
+				}
+
+			}
+		});
+		return R.ok(pageInfo);
+	}
+
+	;
 }
