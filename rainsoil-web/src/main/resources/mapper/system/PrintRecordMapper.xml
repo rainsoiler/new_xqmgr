@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.github.rainsoil.fastapi.web.system.mapper.PrintRecordMapper">
+
+	<select id="printRecordVoReport"
+			resultType="com.github.rainsoil.fastapi.web.system.vo.PrintRecordVo$PrintRecordVoReport">
+
+		select date_format(p1.print_time, "%Y-%m-%d") as dailyDate,
+			   count(p1.id)                           as printCount,
+			   (select count(1)
+				from print_record p2
+				where date_format(p1.print_time, "%Y-%m-%d") = date_format(p2.print_time, "%Y-%m-%d")
+				  and p2.status = 1
+				  and p2.store_id = #{storeId})       as untreatedCount
+		from print_record p1
+		where p1.store_id = #{storeId}
+		group by date_format(p1.print_time, "%Y-%m-%d")
+		order by p1.print_time desc
+
+	</select>
+	<select id="printRecordVoReportInfo"
+			resultType="com.github.rainsoil.fastapi.web.system.vo.PrintRecordVo$PrintRecordInfoGroupmaterialIdVo">
+
+
+		select material_id, material_name as name, count(1) as num
+		from print_record
+		where 1 = 1
+
+		and date_format(print_time, "%Y-%m-%d") = #{time }
+		<if test="status != null and status != ''">
+			and status = #{status}
+		</if>
+		and store_id = #{storeId}
+		group by material_id, material_name
+		order by num desc
+
+	</select>
+</mapper>

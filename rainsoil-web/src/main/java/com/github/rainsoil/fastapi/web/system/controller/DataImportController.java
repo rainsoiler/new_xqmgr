@@ -25,6 +25,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -79,7 +81,6 @@ public class DataImportController {
 		dataSpider(table, token, baseService.getEntityClass(), (entity) -> {
 			baseService.save(entity);
 		});
-
 
 		return R.ok();
 	}

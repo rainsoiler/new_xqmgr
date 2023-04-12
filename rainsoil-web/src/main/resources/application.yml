@@ -13,3 +13,21 @@ server:
 logging:
   level:
     com.github.rainsoil.fastapi: debug
+
+# mybatis-plus 配置
+mybatis-plus:
+  tenant-enable: ture
+  mapper-locations: classpath:/mapper/*/*Mapper.xml
+  global-config:
+    banner: false
+    db-config:
+      db-type: mysql
+      id-type: auto
+      insert-strategy: not_empty
+      update-strategy: not_empty
+      where-strategy: not_empty
+      logic-delete-field: del_flag
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+  configuration:
+    jdbc-type-for-null: null

@@ -183,5 +183,32 @@ public class PrintRecordController {
 		return R.ok(pageInfo);
 	}
 
-	;
+	/**
+	 * 小程序-报表列表
+	 *
+	 * @param pageRequest 分页参数
+	 * @return com.github.rainsoil.fastapi.common.core.R<com.github.rainsoil.fastapi.common.core.PageInfo < com.github.rainsoil.fastapi.web.system.vo.PrintRecordVo.PrintRecordVoReport>>
+	 * @since 2023/04/12
+	 */
+	@ApiOperation(value = "小程序-报表")
+	@PostMapping(value = "mini/printRecordVoReport")
+	public R<PageInfo<PrintRecordVo.PrintRecordVoReport>> printRecordVoReport(@RequestBody PageRequest<PrintRecord> pageRequest) {
+		PageInfo<PrintRecordVo.PrintRecordVoReport> pageInfo = this.iPrintRecordService.printRecordVoReport(pageRequest);
+		return R.ok(pageInfo);
+	}
+
+	/**
+	 * 小程序-报表详情
+	 *
+	 * @param time 时间
+	 * @return com.github.rainsoil.fastapi.common.core.R<com.github.rainsoil.fastapi.web.system.vo.PrintRecordVo.PrintRecordInfoVo>
+	 * @since 2023/04/12
+	 */
+	@ApiOperation(value = "小程序-报表详情")
+	@PostMapping("mini/printRecordVoReportInfo")
+	public R<PrintRecordVo.PrintRecordInfoVo> printRecordVoReportInfo(String time) {
+
+		PrintRecordVo.PrintRecordInfoVo info = this.iPrintRecordService.printRecordVoReportInfo(time);
+		return R.ok(info);
+	}
 }
