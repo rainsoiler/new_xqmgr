@@ -188,4 +188,19 @@ public class WxUserController {
 		return R.ok();
 	}
 
+
+	/**
+	 * 根据code获取unionid
+	 *
+	 * @param code code
+	 * @return com.github.rainsoil.fastapi.common.core.R<java.lang.String>
+	 * @since 2023/04/13
+	 */
+	@PostMapping("getUnionid")
+	@ApiOperation(value = "根据code获取unionid")
+	public R<String> getUnionid(String code) {
+
+		String  unionid = this.iWxUserService.getUnionid(code);
+		return R.ok(unionid);
+	}
 }

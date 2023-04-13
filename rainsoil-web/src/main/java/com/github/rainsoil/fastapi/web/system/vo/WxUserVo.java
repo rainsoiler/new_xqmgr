@@ -102,4 +102,11 @@ public class WxUserVo {
 		@ApiModelProperty("id")
 		private String id;
 	}
+
+
+	public static class WxLoginRes {
+
+		private String openId;
+	}
+
 }

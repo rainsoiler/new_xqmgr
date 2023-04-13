@@ -31,3 +31,8 @@ mybatis-plus:
       logic-not-delete-value: 0
   configuration:
     jdbc-type-for-null: null
+
+wx:
+  miniapp:
+    appid: wxfeec83d8721e879f
+    secret: 2bf5ee2900f4e405007d1ccacee37ef9

@@ -98,4 +98,22 @@ public class Device implements Serializable {
 	@ApiModelProperty("app版本")
 	@TableField("app_version")
 	private String appVersion;
+
+	/**
+	 * 店铺名称
+	 *
+	 * @since 2023/04/13
+	 */
+	@TableField(exist = false)
+	@ApiModelProperty(value = "店铺名称")
+	private String storeName;
+
+	/**
+	 * 区域名称
+	 *
+	 * @since 2023/04/13
+	 */
+	@TableField(exist = false)
+	@ApiModelProperty(value = "区域名称")
+	private String regionName;
 }

@@ -13,4 +13,12 @@ import com.github.rainsoil.fastapi.common.core.mybatis.IBaseService;
  */
 public interface IWxUserService extends IBaseService<WxUser> {
 
+	/**
+	 * 获取unionid
+	 *
+	 * @param code code
+	 * @return java.lang.String
+	 * @since 2023/04/13
+	 */
+	String getUnionid(String code);
 }
