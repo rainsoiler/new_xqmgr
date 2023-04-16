@@ -75,6 +75,14 @@ public class WxUserVo {
 		 */
 		@ApiModelProperty(value = "店铺id")
 		private String storeName;
+
+		/**
+		 * 区域名称
+		 *
+		 * @since 2023/04/14
+		 */
+		@ApiModelProperty(value = "区域名称")
+		private String regionName;
 	}
 
 

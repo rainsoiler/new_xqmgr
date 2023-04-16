@@ -1,15 +1,18 @@
 package com.github.rainsoil.fastapi.web.system.entity;
 
+import cn.hutool.core.date.DatePattern;
 import com.baomidou.mybatisplus.annotation.*;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+import org.springframework.format.annotation.DateTimeFormat;
 
 /**
  * <p>
@@ -113,11 +116,13 @@ public class PrintRecord implements Serializable {
 	/**
 	 * 打印时间
 	 */
+	@JsonFormat( pattern = "yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
 	@ApiModelProperty(value = "打印时间", notes = "")
 	private LocalDateTime printTime;
 	/**
 	 * 过期时间
 	 */
+	@JsonFormat( pattern = "yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
 	@ApiModelProperty(value = "过期时间", notes = "")
 	private LocalDateTime expirationTime;
 	/**
@@ -150,5 +155,49 @@ public class PrintRecord implements Serializable {
 	@ApiModelProperty(value = "状态(1:标准,2:临期,3:超时,4:已完结)")
 	@TableField(exist = false)
 	private String miniStatus;
+
+
+	/**
+	 * 是否打印
+	 *
+	 * @since 2023/04/16
+	 */
+	@ApiModelProperty(value = "是否打印")
+	private String remind;
+
+	/**
+	 * 打印人openid
+	 *
+	 * @since 2023/04/16
+	 */
+	@ApiModelProperty(value = "打印人openid")
+	private String remindUserOpenid;
+
+
+	/**
+	 * 打印人昵称
+	 *
+	 * @since 2023/04/16
+	 */
+	@ApiModelProperty(value = "打印人昵称")
+	private String remindUserNickname;
+
+
+	/**
+	 * 操作人id
+	 *
+	 * @since 2023/04/16
+	 */
+	@ApiModelProperty(value = "操作人id")
+	private String operatorId;
+
+	/**
+	 * 操作人名称
+	 *
+	 * @since 2023/04/16
+	 */
+	@ApiModelProperty(value = "操作人名称")
+	private String operatorName;
+
 
 }

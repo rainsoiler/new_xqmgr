@@ -114,7 +114,7 @@ public class PrintRecordController {
 	 * @since 2023/04/10
 	 */
 	@ApiOperation(value = "小程序-首页统计")
-	@GetMapping("miniStatistics")
+	@PostMapping("miniStatistics")
 	public R<PrintRecordVo.MiniStatistics> miniStatistics() {
 
 		LoginUser user = loginService.getUser();
@@ -153,29 +153,30 @@ public class PrintRecordController {
 		PageInfo<PrintRecord> pageInfo = this.iPrintRecordService.page(pageRequest, new PageHandler<PrintRecord>() {
 			@Override
 			public void queryWrapperHandler(PrintRecord param, LambdaQueryWrapper<PrintRecord> queryWrapper) {
-				if (null != param) {
-					LoginUser user = loginService.getUser();
-					WxUser wxUser = wxUserService.getById(user.getId());
-					queryWrapper.eq(PrintRecord::getStoreId, wxUser.getStoreId());
-					String miniStatus = param.getMiniStatus();
-					if (miniStatus.equals("1")) {
-						// 标准(过期时间大于今天的)
+				if (null == param) {
+					param = new PrintRecord();
+				}
+				LoginUser user = loginService.getUser();
+				WxUser wxUser = wxUserService.getById(user.getId());
+				queryWrapper.eq(PrintRecord::getStoreId, wxUser.getStoreId());
+				String miniStatus = param.getMiniStatus();
+				if (miniStatus.equals("1")) {
+					// 标准(过期时间大于今天的)
 
-						queryWrapper.eq(PrintRecord::getStatus, 1)
-								.ge(PrintRecord::getExpirationMs, System.currentTimeMillis());
-					} else if (miniStatus.equals("2")) {
-						// 临期(过期时间大于今天,小于临期时间之内的)
-						queryWrapper.eq(PrintRecord::getStatus, 1)
-								.ge(PrintRecord::getExpirationMs, System.currentTimeMillis())
-								.lt(PrintRecord::getExpirationMs, DateUtil.offsetDay(new Date(), 2).getTime());
-					} else if (miniStatus.equals("3")) {
-						// 超时(过期时间小于今天的)
-						queryWrapper.eq(PrintRecord::getStatus, "1")
-								.lt(PrintRecord::getExpirationMs, System.currentTimeMillis());
-					} else if (miniStatus.equals("4")) {
-						// 已完结
-						queryWrapper.eq(PrintRecord::getStatus, "2");
-					}
+					queryWrapper.eq(PrintRecord::getStatus, 1)
+							.ge(PrintRecord::getExpirationMs, System.currentTimeMillis());
+				} else if (miniStatus.equals("2")) {
+					// 临期(过期时间大于今天,小于临期时间之内的)
+					queryWrapper.eq(PrintRecord::getStatus, 1)
+							.ge(PrintRecord::getExpirationMs, System.currentTimeMillis())
+							.lt(PrintRecord::getExpirationMs, DateUtil.offsetDay(new Date(), 2).getTime());
+				} else if (miniStatus.equals("3")) {
+					// 超时(过期时间小于今天的)
+					queryWrapper.eq(PrintRecord::getStatus, "1")
+							.lt(PrintRecord::getExpirationMs, System.currentTimeMillis());
+				} else if (miniStatus.equals("4")) {
+					// 已完结
+					queryWrapper.eq(PrintRecord::getStatus, "2");
 				}
 
 			}

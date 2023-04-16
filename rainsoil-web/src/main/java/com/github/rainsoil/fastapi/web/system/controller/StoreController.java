@@ -1,5 +1,7 @@
 package com.github.rainsoil.fastapi.web.system.controller;
 
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.github.rainsoil.fastapi.common.core.PageInfo;
 import com.github.rainsoil.fastapi.common.core.PageRequest;
 import com.github.rainsoil.fastapi.common.core.R;
@@ -115,4 +117,27 @@ public class StoreController {
 				.setEquipmentSn(sn));
 		return R.ok();
 	}
+
+
+	/**
+	 * 解绑云打印机
+	 *
+	 * @return com.github.rainsoil.fastapi.common.core.R
+	 * @since 2023/04/16
+	 */
+	@PostMapping("miniUnBindSn")
+	@ApiOperation(value = "解绑云打印机")
+	public R miniUnBindSn() {
+		LoginUser user = loginService.getUser();
+		WxUser wxUser = wxUserService.getById(user.getId());
+		this.iStoreService
+				.update(
+						null,
+						Wrappers.<Store>lambdaUpdate()
+								.set(Store::getEquipmentSn, null) //把email设置成null
+								.eq(Store::getId, wxUser.getStoreId())
+				);
+		return R.ok();
+	}
+
 }

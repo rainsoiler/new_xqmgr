@@ -1,6 +1,8 @@
 package com.github.rainsoil.fastapi.web.system.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.github.rainsoil.fastapi.common.core.PageInfo;
 import com.github.rainsoil.fastapi.common.core.PageRequest;
 import com.github.rainsoil.fastapi.common.core.R;
@@ -11,6 +13,7 @@ import com.github.rainsoil.fastapi.web.security.LoginService;
 import com.github.rainsoil.fastapi.web.security.LoginUser;
 import com.github.rainsoil.fastapi.web.system.entity.Store;
 import com.github.rainsoil.fastapi.web.system.entity.WxUser;
+import com.github.rainsoil.fastapi.web.system.service.IRegionService;
 import com.github.rainsoil.fastapi.web.system.service.IStoreService;
 import com.github.rainsoil.fastapi.web.system.service.IWxUserService;
 import com.github.rainsoil.fastapi.web.system.vo.WxUserVo;
@@ -38,6 +41,8 @@ public class WxUserController {
 	private final IStoreService storeService;
 
 	private final LoginService loginService;
+
+	private final IRegionService regionService;
 
 	/**
 	 * 分页
@@ -120,6 +125,9 @@ public class WxUserController {
 		WxUserVo.WxUserMiniVo wxUserMinioVo = BeanConvertUtils.convertTo(wxUser, WxUserVo.WxUserMiniVo::new);
 		wxUserMinioVo.setStoreName(store.getName());
 		wxUserMinioVo.setDeviceSN(store.getEquipmentSn());
+
+		String regionId = store.getRegionId();
+		wxUserMinioVo.setRegionName(this.regionService.getById(regionId).getName());
 		return R.ok(wxUserMinioVo);
 	}
 
@@ -143,6 +151,8 @@ public class WxUserController {
 		}
 		param.setStoreId(wxUser.getStoreId())
 				.setAdmin("0");
+
+		pageRequest.setParam(param);
 		return R.ok(this.iWxUserService.page(pageRequest));
 	}
 
@@ -162,13 +172,18 @@ public class WxUserController {
 		WxUser wxUser = this.iWxUserService.getById(user.getId());
 		// 判断店员是不是已经绑定
 		WxUser wxUser2 = this.iWxUserService.getById(bindClerkVo.getId());
-		if (null != wxUser2) {
+		if (null != wxUser2 && null != wxUser2.getStoreId()) {
 			throw new WarningException(20000);
 		}
+
 		WxUser param = BeanConvertUtils.convertTo(bindClerkVo, WxUser::new);
+		if (null != wxUser2) {
+			param.setId(wxUser2.getId());
+		}
+
 		param.setAdmin("0");
 		param.setStoreId(wxUser.getStoreId());
-		this.save(param);
+		this.iWxUserService.saveOrUpdate(param);
 		return R.ok();
 	}
 
@@ -184,7 +199,15 @@ public class WxUserController {
 	@ApiOperation(value = "小程序-解除员工绑定")
 	public R miniRelieveBindClerk(String id) {
 
-		this.iWxUserService.removeById(id);
+
+
+		this.iWxUserService
+				.update(
+						null,
+						Wrappers.<WxUser>lambdaUpdate()
+								.set(WxUser::getStoreId, null) //把email设置成null
+								.eq(WxUser::getId, id)
+				);
 		return R.ok();
 	}
 
@@ -200,7 +223,7 @@ public class WxUserController {
 	@ApiOperation(value = "根据code获取unionid")
 	public R<String> getUnionid(String code) {
 
-		String  unionid = this.iWxUserService.getUnionid(code);
+		String unionid = this.iWxUserService.getUnionid(code);
 		return R.ok(unionid);
 	}
 }
